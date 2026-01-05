@@ -16,6 +16,11 @@ The published version of the pages can be found on GitHub pages:
 
 Published URL: [https://natgale.github.io/sorry-cards/](https://natgale.github.io/sorry-cards/)
 
+## TODO
+
+- Next colour to work with multi-card turns using card "2"
+- Enable various colour combinations as different across different generations of boards
+
 ## Usage
 
 Feel free to use it or fork it for your own flavour.
