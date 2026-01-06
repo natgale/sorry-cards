@@ -74,8 +74,10 @@ card.onclick = function(){
     card.style.transform = 'rotateY(0deg)'
     currentInner = 'card-a'
   }
-  setNextCard()
-  nextColour()
+  const shouldAdvanceColour = setNextCard()
+  if (shouldAdvanceColour) {
+    nextColour()
+  }
 }
 
 function setNextCard(){
@@ -100,7 +102,10 @@ function setNextCard(){
   }
   
   // Add the new player colour
-  colourActive.classList.add( colourOrder[0] )  
+  colourActive.classList.add( colourOrder[0] )
+  
+  // Return false if this is a "roll again" card (same player goes again)
+  return !cardValue.includes('roll again')
 }
 
 function nextColour(){
