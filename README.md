@@ -68,7 +68,6 @@ Originally started as a Pen created on CodePen, then exported to GitHub.
 
 ## TODO
 
-- Next colour to work with multi-card turns using card "2"
 - Enable various colour combinations as different across different generations of boards
 
 ## Usage
