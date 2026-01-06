@@ -66,6 +66,11 @@ Originally started as a Pen created on CodePen, then exported to GitHub.
 
 **Original CodePen**: [https://codepen.io/natgale/pen/XJKJjNY](https://codepen.io/natgale/pen/XJKJjNY)
 
+## TODO
+
+- Next colour to work with multi-card turns using card "2"
+- Enable various colour combinations as different across different generations of boards
+
 ## Usage
 
 Feel free to use it or fork it for your own flavour.
