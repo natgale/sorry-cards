@@ -50,7 +50,8 @@ const startDeck = [
 
 const card = document.getElementById('card')
 let currentInner = 'card-a'
-let colourOrder = ['red','blue','yellow','green']
+let colourOrder = []
+let selectedColors = []
 const colourActive = document.getElementById('colour')
 
 function shuffle(array) {
@@ -61,6 +62,46 @@ function shuffle(array) {
     [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
   }
   return array
+}
+
+function selectColor(color) {
+  const button = document.querySelector(`[data-color="${color}"]`)
+  
+  // If already selected, remove it and all colors after it
+  const existingIndex = selectedColors.indexOf(color)
+  if (existingIndex !== -1) {
+    // Remove this color and all after it
+    const colorsToRemove = selectedColors.slice(existingIndex)
+    colorsToRemove.forEach(colorToRemove => {
+      const btnToRemove = document.querySelector(`[data-color="${colorToRemove}"]`)
+      btnToRemove.textContent = ''
+      btnToRemove.classList.remove('selected')
+    })
+    selectedColors = selectedColors.slice(0, existingIndex)
+  } else {
+    // Add new color
+    selectedColors.push(color)
+    button.textContent = selectedColors.length
+    button.classList.add('selected')
+  }
+  
+  // Update start button state
+  const startButton = document.getElementById('start-game')
+  startButton.disabled = selectedColors.length === 0
+}
+
+function startGame() {
+  if (selectedColors.length === 0) return
+  
+  // Set the color order based on selection
+  colourOrder = [...selectedColors]
+  
+  // Hide the start screen
+  document.getElementById('start-screen').style.display = 'none'
+  
+  // Show the cards
+  document.getElementById('cards').style.opacity = '100'
+  document.getElementById('cards').style.marginTop = '0'
 }
 
 // Create the main card deck
@@ -113,25 +154,6 @@ function nextColour(){
   colourOrder.push(first);
 }
 
-function pickStartColour(choice){
-  
-  console.log('colour choice', choice)
-  
-  // Loop around the colours until the correct starting one
-  if (choice !== colourOrder[0]){
-    while ( choice !== colourOrder[0] ){
-      nextColour()
-    }
-  }
-  
-  // Hide the start screen
-  document.getElementById('start-screen').style.display = 'none'
-  
-  // Show the cards
-  document.getElementById('cards').style.opacity = '100'
-  document.getElementById('cards').style.marginTop = '0'
-}
-
 function reset(){
   
   // Show the start screen
@@ -141,6 +163,19 @@ function reset(){
   document.getElementById('cards').style.opacity = '0'
   document.getElementById('cards').style.marginTop = '500px'
 
+  // Reset selections
+  selectedColors = []
+  colourOrder = []
+  
+  // Clear color button numbers and selections
+  document.querySelectorAll('.start-colour button[data-color]').forEach(btn => {
+    btn.textContent = ''
+    btn.classList.remove('selected')
+  })
+  
+  // Disable start button
+  document.getElementById('start-game').disabled = true
+  
   // Empty the deck
   deck = [];
   
@@ -156,12 +191,15 @@ function reset(){
 }
 
 // Get the colour picker buttons and attach the click event
-const colourButtons = document.querySelectorAll('.start-colour button')
-for (var i = 0; i < 4; i ++ ){
-  colourButtons[i].addEventListener('click', function(){
-    pickStartColour(this.className);
+const colourButtons = document.querySelectorAll('.start-colour button[data-color]')
+colourButtons.forEach(button => {
+  button.addEventListener('click', function(){
+    selectColor(this.dataset.color)
   })
-}
+})
+
+// Attach the start game event
+document.getElementById('start-game').addEventListener('click', startGame)
 
 // Attach the reset script
 document.getElementById('reset').addEventListener('click', function(){
